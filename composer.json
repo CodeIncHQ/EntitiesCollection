@@ -1,0 +1,29 @@
+{
+  "name": "codeinc/entities-collection",
+  "version": "1.0.0",
+  "description": "Iterable Doctrine entities collection",
+  "homepage": "https://github.com/CodeIncHQ/EntitiesCollection",
+  "type": "library",
+  "license": "proprietary",
+  "require": {
+    "php": ">=7.1"
+  },
+  "autoload": {
+    "psr-4": {
+      "CodeInc\\EntitiesCollection\\": "src"
+    }
+  },
+  "authors": [
+    {
+      "name": "Joan Fabrégat",
+      "email": "joan@codeinc.fr",
+      "homepage": "https://www.codeinc.fr",
+      "role": "developer"
+    }
+  ],
+  "config": {
+    "preferred-install": {
+      "*": "dist"
+    }
+  }
+}
