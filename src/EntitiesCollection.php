@@ -49,17 +49,18 @@ class EntitiesCollection extends AbstractEntitiesCollection
     /**
      * Verifies if a class is allowed here.
      *
-     * @param string $entityClass
+     * @param EntityInterface $entity
      * @return bool
      */
-    protected function isClassAllowed(string $entityClass):bool
+    protected function isEntityAllowed(EntityInterface $entity):bool
     {
         if (!$this->allowedEntityClasses) {
             return true;
         }
         else {
+            $entityClass = get_class($entity);
             foreach ($this->allowedEntityClasses as $allowedEntityClass) {
-                if ($allowedEntityClass == $entityClass || is_subclass_of($entityClass, $allowedEntityClass)) {
+                if ($entityClass == $allowedEntityClass || is_subclass_of($entity, $allowedEntityClass)) {
                     return true;
                 }
             }

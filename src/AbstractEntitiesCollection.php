@@ -69,10 +69,10 @@ abstract class AbstractEntitiesCollection implements \Countable, \Iterator
     /**
      * Verifies if a class is allowed here.
      *
-     * @param string $entityClass
+     * @param EntityInterface $entity
      * @return bool
      */
-    abstract protected function isClassAllowed(string $entityClass):bool;
+    abstract protected function isEntityAllowed(EntityInterface $entity):bool;
 
     /**
      * Adds an entity to the collection.
@@ -81,7 +81,7 @@ abstract class AbstractEntitiesCollection implements \Countable, \Iterator
      */
     public function add(EntityInterface $entity):void
     {
-        if (!$this->isClassAllowed(get_class($entity))) {
+        if (!$this->isEntityAllowed($entity)) {
             throw new \RuntimeException(
                 sprintf("The entity class '%s' can not be added to the collection '%s'",
                     get_class($entity), get_called_class())
@@ -98,6 +98,10 @@ abstract class AbstractEntitiesCollection implements \Countable, \Iterator
     public function addMultiple(iterable $entities):void
     {
         foreach ($entities as $entity) {
+            if (!$entity instanceof EntityInterface) {
+                throw new \RuntimeException(sprintf("All entities added to %s must implement %s",
+                    get_called_class(), EntityInterface::class));
+            }
             $this->add($entity);
         }
     }
@@ -109,7 +113,7 @@ abstract class AbstractEntitiesCollection implements \Countable, \Iterator
      */
     public function remove(EntityInterface $entity):void
     {
-        if ($this->isClassAllowed(get_class($entity))) {
+        if ($this->isEntityAllowed($entity)) {
             unset($this->entities[$entity->getId()]);
         }
     }
@@ -122,7 +126,7 @@ abstract class AbstractEntitiesCollection implements \Countable, \Iterator
      */
     public function contains(EntityInterface $entity):bool
     {
-        if ($this->isClassAllowed(get_class($entity))) {
+        if ($this->isEntityAllowed($entity)) {
             return array_key_exists($entity->getId(), $this->entities);
         }
         return false;
